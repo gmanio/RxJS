@@ -10,7 +10,7 @@ var paths = {
 
 var watchedBrowserify = watchify(browserify({
     basedir: '.',
-    debug: false,
+    debug: true,
     entries: ['src/main.ts'],
     cache: {},
     packageCache: {}

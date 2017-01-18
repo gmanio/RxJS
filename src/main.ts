@@ -6,7 +6,18 @@ import * as Rx from 'rxjs';
 
 class Main {
     constructor() {
-        console.log(Rx);
+        this.attachEvent();
+    }
+
+    attachEvent() {
+        let input = document.querySelector('.inp');
+
+        Rx.Observable.fromEvent(input, 'keyup')
+            .debounceTime(1000)
+            .subscribe((e) => {
+                // TODO: search API data binding.
+                console.log(e.target.value);
+            })
     }
 }
 
