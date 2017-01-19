@@ -2,36 +2,30 @@
  * Created on 2017-01-17.
  * @author: Gman Park
  */
-// import * as Rx from 'rxjs';
-import * as Rx from 'rx-dom/dist/rx.dom';
+import * as Rx from 'rxjs';
 
 class Main {
+    // for SK weather API.
+    private static App_key = 'f0c12da8-2ef4-3e24-8815-e2f347909a80';
+
     constructor() {
         this.attachEvent();
     }
 
-    //http://finance.daum.net/xml/xmlallpanel.daum?stype=P&type=s
     attachEvent() {
         let input = document.querySelector('.inp');
-        console.log(Rx.DOM);
-        Rx.DOM.ajax({url: 'http://finance.daum.net/xml/xmlallpanel.daum?stype=P&type=s', responseType: 'json'})
+
+        Rx.Observable
+            .ajax({
+                url: 'http://apis.skplanetx.com/weather/current/minutely?appKey=f0c12da8-2ef4-3e24-8815-e2f347909a80&lon=126.9658000000&village=&county=&stnid=&lat=37.5714000000&city=&version=1',
+                crossDomain: true
+            })
+            // .map(e => console.log(e.response))
             .subscribe(
-                function (data) {
-                    data.response.forEach(function (product) {
-                        console.log(product);
-                    });
-                },
-                function (error) {
-                    // Log the error
+                (res) => {
+                    console.log(res.response);
                 }
             );
-
-        // Rx.Observable.fromEvent(input, 'keyup')
-        //     .debounceTime(1000)
-        //     .subscribe((e) => {
-        //         // TODO: search API data binding.
-        //         console.log(e.target.value);
-        //     })
     }
 }
 

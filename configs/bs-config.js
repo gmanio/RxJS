@@ -4,15 +4,13 @@
  */
 
 var compression = require('compression');
+var proxyMiddleware = require('http-proxy-middleware');
 
+var baseDir = process.cwd() + '/dist';
 module.exports = {
-
-    // "server": { "baseDir": "./dist" },
-    // "files": ["./dist/**/*.{html,htm,css,js}"],
-
     server: {
         port: 3000,
-        baseDir: process.cwd() + '\\dist',
+        baseDir: baseDir,
         files: [
             // "./dist/*.{html,htm,css,js,ts}",
             // "./dist/**/*.{html,htm,css,js,ts}",
@@ -21,14 +19,11 @@ module.exports = {
         middleware: {
             // overrides the second middleware default with new settings
             1: compression(), //gzip configure,
-
-            /**
-             * Only for develop environment.
-             */
-            2: require('connect-history-api-fallback')({
-                index: 'index.html',
-                verbose: true
-            })
+            2: proxyMiddleware('/api', {
+                target: 'http://finance.daum.net/xml/xmlallpanel.daum?stype=P&type=s',
+                // changeOrigin: true   // for vhosted sites, changes host header to match to target's host
+            }),
+            3: require('connect-history-api-fallback')({index: '/index.html', verbose: true})
         }
     }
 }
