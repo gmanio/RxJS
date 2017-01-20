@@ -17,13 +17,13 @@ class Main {
 
         Rx.Observable
             .ajax({
-                url: 'http://apis.skplanetx.com/weather/current/minutely?appKey=f0c12da8-2ef4-3e24-8815-e2f347909a80&lon=126.9658000000&village=&county=&stnid=&lat=37.5714000000&city=&version=1',
+                url: 'http://apis.skplanetx.com/weather/current/minutely?appKey=' + Main.App_key + '&lon=126.9658000000&village=&county=&stnid=&lat=37.5714000000&city=&version=1',
                 crossDomain: true
             })
-            // .map(e => console.log(e.response))
+            .map(e => console.log(e.response))
             .subscribe(
                 (res) => {
-                    console.log(res.response);
+                    console.log(res);
                 }
             );
     }
