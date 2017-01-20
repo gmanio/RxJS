@@ -10,12 +10,26 @@ var Main = (function () {
     }
     Main.prototype.attachEvent = function () {
         var input = document.querySelector('.inp');
+        Rx.Observable.fromEvent(input, 'keyup')
+            .debounceTime(1000);
+        this.requestData();
+    };
+    Main.prototype.requestData = function () {
         Rx.Observable
             .ajax({
-            url: 'http://apis.skplanetx.com/weather/current/minutely?appKey=' + Main.App_key + '&lon=126.9658000000&village=&county=&stnid=&lat=37.5714000000&city=&version=1',
-            crossDomain: true
+            url: 'http://apis.skplanetx.com/11st/v2/common/products?appKey=' + Main.App_key + '&searchKeyword=nike&sortCode=A',
+            crossDomain: true,
+            headers: {
+                "Content-type": "application/json",
+                "Accept": "application/json"
+            }
         })
-            .map(function (e) { return console.log(e.response); })
+            .map(function (e) { return e.response; })
+            .map(function (e) {
+            if (e.ProductSearchResponse) {
+                return e.ProductSearchResponse.Products.Product;
+            }
+        })
             .subscribe(function (res) {
             console.log(res);
         });
